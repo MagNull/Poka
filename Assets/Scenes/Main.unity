@@ -28889,26 +28889,6 @@ MonoBehaviour:
   - {fileID: 2094388293}
   - {fileID: 1684704913}
   - {fileID: 1190243320}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   mainMenu: {fileID: 1233763429}
   gameUI: {fileID: 453519506}
   chooseLevelMenu: {fileID: 851812467}
@@ -28927,7 +28907,6 @@ MonoBehaviour:
   - {fileID: 5346585390669194971, guid: 3c07ac0bb023372458976a96025d362a, type: 3}
   - {fileID: 5988100542272821423, guid: e31756f9ea40edd43a2106a2a9e93a23, type: 3}
   - {fileID: 2172156038300679420, guid: 8da6a1a6233fe8b4c83a081eb9003ae1, type: 3}
-  isTest: 1
   swapSpeed: 3
   swapRoatationSpeed: 3
   mainTransform: {fileID: 1473721645}
@@ -44326,7 +44305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1233763430
 RectTransform:
   m_ObjectHideFlags: 0

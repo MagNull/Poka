@@ -81,14 +81,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed390986d512e74f93e8d18492c7413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UnitPrice: 2
+  Damage: 1
   _minDistToAttack: 2.8
   _speed: 2
-  _damage: 2
   attackDelay: 0
   minAttackDelay: 2
   maxAttackDelay: 2.5
   numberOfAttackAnimations: 2
-  UnitPrice: 2
   _offsetSpeed: 1
   _backStepSpeed: 1.4
   _minDistToBackStep: 2
@@ -141,6 +141,31 @@ MonoBehaviour:
   - {fileID: 3524517564594729355}
   - {fileID: 4961722237543608366}
   _size: {x: 1, y: 1}
+--- !u!65 &304502137919974210
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6907229242214824453}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.50029355, y: 1.3894026, z: 0.2758543}
+  m_Center: {x: -0.0075356164, y: 3.68351, z: 0.0038296878}
+--- !u!114 &934146198117452722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6907229242214824453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3ae887e3bb593c40aa6f312618dd750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4776725854213400052
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -304,8 +329,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: spear
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 62566555cb9164b4a81e54edd62452ec,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62566555cb9164b4a81e54edd62452ec, type: 3}
+--- !u!1 &6907229242214824453 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 62566555cb9164b4a81e54edd62452ec,
+    type: 3}
+  m_PrefabInstance: {fileID: 5988100542992910164}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6093573477025439935 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 62566555cb9164b4a81e54edd62452ec,

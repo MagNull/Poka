@@ -66,16 +66,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd4a305e79cc3ae4ba0fd38efc3b5ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minDistToAttack: 2
-  _speed: 1
-  _damage: 2
-  attackDelay: 0
-  minAttackDelay: 5
-  maxAttackDelay: 6
-  numberOfAttackAnimations: 1
   UnitPrice: 0
+  Damage: 1
+  _minDistToAttack: 1.5
+  _speed: 1
+  attackDelay: 0
+  minAttackDelay: 1.5
+  maxAttackDelay: 2
+  numberOfAttackAnimations: 1
   _offsetSpeed: 1
-  _shieldAttackDist: 4
+  ShieldAttackDist: 4
+  canAttack: 1
 --- !u!114 &1267425575173833963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,9 +227,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2642856245530505919}
+  - component: {fileID: 9182054319774620192}
+  - component: {fileID: 6846337739974179496}
   m_Layer: 0
   m_Name: shieldT
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -248,6 +251,31 @@ Transform:
   m_Father: {fileID: 6318000134988412156}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &9182054319774620192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3451621451201046533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37c34a85d4ee8a54780829681c1e2130, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &6846337739974179496
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3451621451201046533}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.41570556, y: 2.3268483, z: 1.7794486}
+  m_Center: {x: 0.20493652, y: 0.19387557, z: 0.0018480454}
 --- !u!1 &6693997259608747590
 GameObject:
   m_ObjectHideFlags: 0

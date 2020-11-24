@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class GameManger : MonoBehaviour
@@ -23,12 +24,11 @@ public class GameManger : MonoBehaviour
     [SerializeField] private GameObject chooseLevelMenu;
     [SerializeField] private GameObject winScreen;
     [SerializeField] private TMPro.TextMeshProUGUI balanceText;
-    private UnityEngine.UI.Button[] _buttons;
-    [SerializeField] private UnityEngine.UI.Button activeButton;
+    private Button[] _buttons;
+    [SerializeField] private Button activeButton;
     [SerializeField] private ButtonLighter[] unitButtons;
 
     [SerializeField] private Unit[] units;
-    public bool isTest = true;
 
     [Header("Swap Params")]
     [SerializeField] private float swapSpeed;
@@ -51,6 +51,7 @@ public class GameManger : MonoBehaviour
         set 
         {
             _moneyBalance = value;
+            CheckButton();
             balanceText.text = _moneyBalance.ToString();
         }
     }
@@ -69,7 +70,7 @@ public class GameManger : MonoBehaviour
         balanceText.text = _moneyBalance.ToString();
         InitializeGrids();
         _buttons = FindObjectsOfType<UnityEngine.UI.Button>();
-        if (!isTest)
+        if (!isDebugMode)
         {
             for (var i = 1; i < levelButtons.Length; i++)
             {
@@ -85,24 +86,36 @@ public class GameManger : MonoBehaviour
         _grid = FindObjectOfType<Grid>();
         _enemyGrid = FindObjectOfType<EnemyGrid>();
     }
-
-    private void Update()
-    {
-        CheckButton();
-    }
+    
 
     public void SetDebugState(bool state)
     {
         isDebugMode = state;
+        for (var i = 1; i < levelButtons.Length; i++)
+        {
+            levelButtons[i].ChangeButtonState(isDebugMode);
+        }
+        CheckLevels();
     }
 
     private void CheckButtonOnLevel() //Проверка доступности юнита на уровне
     {
-        unitButtons[0].gameObject.SetActive(level.Archer ? true : false);
-        unitButtons[1].gameObject.SetActive(level.Warrior ? true : false);
-        unitButtons[2].gameObject.SetActive(level.Shielder ? true : false);
-        unitButtons[3].gameObject.SetActive(level.Spearman ? true : false);
-        unitButtons[4].gameObject.SetActive(level.Catapult ? true : false);
+        if (!isDebugMode)
+        {
+            unitButtons[0].gameObject.SetActive(level.Archer ? true : false);
+            unitButtons[1].gameObject.SetActive(level.Warrior ? true : false);
+            unitButtons[2].gameObject.SetActive(level.Shielder ? true : false);
+            unitButtons[3].gameObject.SetActive(level.Spearman ? true : false);
+            unitButtons[4].gameObject.SetActive(level.Catapult ? true : false);
+        }
+        else
+        {
+            foreach (ButtonLighter button in unitButtons)
+            {
+                button.gameObject.SetActive(true);
+            }
+        }
+        
     }
 
     private void CheckLevels() //Проверка пройденых уровней

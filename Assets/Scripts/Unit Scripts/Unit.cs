@@ -7,10 +7,11 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public abstract class Unit : MonoBehaviour
 {
+    public int UnitPrice;
+    public int Damage = 1;
     protected List<Unit> _enemys = new List<Unit>();
     [SerializeField] protected float _minDistToAttack = 5;
     [SerializeField] protected float _speed;
-    [SerializeField] protected int _damage = 1;
     [SerializeField] protected float attackDelay;
     [SerializeField] protected float minAttackDelay;
     [SerializeField] protected float maxAttackDelay;
@@ -21,7 +22,6 @@ public abstract class Unit : MonoBehaviour
     protected bool isAttack = true;
     protected HealthPoints targHP;
     [SerializeField] protected int numberOfAttackAnimations;
-    public int UnitPrice;
     [SerializeField] private float _offsetSpeed = 1;
     private int _offsetDirection;
 
@@ -80,25 +80,6 @@ public abstract class Unit : MonoBehaviour
         target = nearest;
     }
 
-    public void FindArcher()
-    {
-        Unit nearest = null;
-        foreach (Unit enemy in _enemys)
-        {
-            if (enemy != null && enemy.GetComponent<Archer>() != null)
-            {
-                if (nearest != null)
-                    nearest = Vector3.Distance(gameObject.transform.position, nearest.transform.position) >
-                              Vector3.Distance(gameObject.transform.position, enemy.transform.position) ? enemy : nearest;
-                else
-                {
-                    nearest = enemy;
-                }    
-            }
-        }
-        target = nearest;
-    }
-
     protected virtual void Work()
     {
         FindTarget();
@@ -137,7 +118,7 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void Attack()
     {
-        targHP?.TakeDamage(_damage,ref isAttack);
+        //targHP?.TakeDamage(_damage,ref isAttack);
         _animator?.SetInteger("Attack", UnityEngine.Random.Range(1, numberOfAttackAnimations + 1));
     }
 

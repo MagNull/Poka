@@ -1,18 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Shielder : Unit
 {
-    [SerializeField] private float _shieldAttackDist;
+    public float ShieldAttackDist;
+    public bool canAttack = true;
+    private float time = 0;
     public override void Attack()
     {
         base.Attack();
-        if(target != null)
-        {
-            Vector3 newTargetPos = target.transform.position + transform.forward * _shieldAttackDist;
-            StartCoroutine(ShieldBash(newTargetPos));
-        }
     }
 
     protected override void Work()
@@ -27,15 +25,17 @@ public class Shielder : Unit
             {
                 targHP = target.GetComponent<HealthPoints>();
                 _rb.velocity = Vector3.zero;
-                if (_animator?.GetInteger("Attack") == 0)
+                if (canAttack)
                 {
                     _animator?.SetInteger("Attack", UnityEngine.Random.Range(1, numberOfAttackAnimations + 1));
-                    _animator.speed = 3 / attackDelay;
+                }
+                else
+                {
+                    _animator?.SetInteger("Attack",0);
                 }
             }
             else
             {
-                _animator?.SetInteger("Attack", 0);
                 _rb.velocity = movementDirection * _speed;
             }
         }
@@ -49,37 +49,17 @@ public class Shielder : Unit
             _rb.velocity = Vector3.zero;
         }
     }
-    private IEnumerator ShieldBash(Vector3 newPos)
+
+    private void FixedUpdate()
     {
-        if(target)
+        if (time >= attackDelay)
         {
-            Transform targ = target.transform;
-            if (targ == null)
-            {
-                yield return null;
-            }
-            Rigidbody targRb = target.GetComponent<Rigidbody>();
-            Vector3 firstPos = targ.position;
-            BoxCollider targetCol = target.GetComponent<BoxCollider>();
-            targetCol.enabled = false;
-            while (targ && (targ.position - firstPos).magnitude < (newPos - firstPos).magnitude)
-            {
-                if (target.transform)
-                {
-                    if (targRb == null)
-                    {
-                        break;
-                    }
-                    targRb.velocity = (newPos - firstPos).normalized * _shieldAttackDist;
-                    yield return null;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            targetCol.enabled = true;
+            time = 0;
+            canAttack = true;
         }
-        
+        else if(!canAttack)
+        {
+            time += Time.deltaTime;
+        }
     }
 }

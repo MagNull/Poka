@@ -149,16 +149,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd4a305e79cc3ae4ba0fd38efc3b5ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minDistToAttack: 2
-  _speed: 1
-  _damage: 2
-  attackDelay: 0
-  minAttackDelay: 5
-  maxAttackDelay: 6
-  numberOfAttackAnimations: 1
   UnitPrice: 3
+  Damage: 1
+  _minDistToAttack: 1.5
+  _speed: 1
+  attackDelay: 0
+  minAttackDelay: 1.5
+  maxAttackDelay: 2
+  numberOfAttackAnimations: 1
   _offsetSpeed: 1
-  _shieldAttackDist: 4
+  ShieldAttackDist: 4
+  canAttack: 1
 --- !u!114 &5346585390669194970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,7 +280,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 421d5b7833a25dd4e9e20d4796ebd258, type: 2}
+  - {fileID: 2100000, guid: 260bbd5203432f145a711d82ff6f9d2f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -309,9 +310,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9153953326895632526}
+  - component: {fileID: 1536245721761080998}
+  - component: {fileID: 3296364224821942517}
   m_Layer: 0
   m_Name: shieldT
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -331,6 +334,31 @@ Transform:
   m_Father: {fileID: 867545923012564685}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!65 &1536245721761080998
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8377452464792586804}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.3786188, y: 2.3831267, z: 1.6257781}
+  m_Center: {x: 0.20010167, y: 0.24804637, z: 0.043202486}
+--- !u!114 &3296364224821942517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8377452464792586804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37c34a85d4ee8a54780829681c1e2130, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6263906245138861802
 PrefabInstance:
   m_ObjectHideFlags: 0
