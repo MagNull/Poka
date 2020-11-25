@@ -83,7 +83,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitPrice: 1
   Damage: 1
-  _minDistToAttack: 1.5
+  _minDistToAttack: 1.3
   _speed: 1.5
   attackDelay: 0
   minAttackDelay: 2

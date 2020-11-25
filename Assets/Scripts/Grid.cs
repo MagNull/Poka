@@ -121,7 +121,11 @@ public class Grid : MonoBehaviour
     private void Update()
     {
         Placement();
-       //MoveUnit();
+        MoveUnit();
+        if (Input.GetMouseButtonDown(0))
+        {
+            PlaceFlyingUnit();
+        }
     }
 
     private void MoveUnit()
