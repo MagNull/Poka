@@ -44,7 +44,7 @@ public class Spearman : Unit
             _animator?.SetInteger("Attack", 0);
             if (gameObject.tag == "Player")
             {
-                FindObjectOfType<GameManger>().Win();
+                FindObjectOfType<UIMethods>().Win();
             }
         }
     }

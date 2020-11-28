@@ -8,10 +8,6 @@ public class Shielder : Unit
     public float ShieldAttackDist;
     public bool canAttack = true;
     private float time = 0;
-    public override void Attack()
-    {
-        base.Attack();
-    }
 
     protected override void Work()
     {
@@ -43,7 +39,7 @@ public class Shielder : Unit
         {
             if (gameObject.tag == "Player")
             {
-                FindObjectOfType<GameManger>().Win();
+                FindObjectOfType<UIMethods>().Win();
             }
             _animator?.SetInteger("Attack", 0);
             _rb.velocity = Vector3.zero;

@@ -4,22 +4,6 @@ using UnityEngine;
 
 public class Catapult : Archer
 {
-    /*protected override float CalculateTrajectory(HealthPoints target)
-    {
-        if (target != null)
-        {
-            Vector3 fromTo = target.transform.position - transform.position - transform.forward * 2;
-            Vector3 fromToXZ = new Vector3(fromTo.x, 0, fromTo.z);
-            transform.rotation = Quaternion.LookRotation(fromToXZ, Vector3.up);
-            float x = fromToXZ.magnitude;
-            float y = fromTo.y;
-            float speed2 = (Physics.gravity.y * x * x) / (2 * (y - Mathf.Tan(_shootAngle * Mathf.Deg2Rad) * x) *
-                                 Mathf.Pow(Mathf.Cos(_shootAngle * Mathf.Deg2Rad), 2));
-            float speed = Mathf.Sqrt(Mathf.Abs(speed2));
-            return speed;
-        }
-        return 0;
-    }*/
     protected override void Work()
     {
         FindTarget();
@@ -55,7 +39,7 @@ public class Catapult : Archer
         {
             if (gameObject.tag == "Player")
             {
-                FindObjectOfType<GameManger>().Win();
+                FindObjectOfType<UIMethods>().Win();
             }
             _rb.velocity = Vector3.zero;
             _animator?.SetInteger("Attack", 0);

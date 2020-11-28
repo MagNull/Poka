@@ -16,10 +16,8 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected float minAttackDelay;
     [SerializeField] protected float maxAttackDelay;
     protected Animator _animator;
-    protected Coroutine coroutine;
     protected Rigidbody _rb;
     protected Unit target;
-    protected bool isAttack = true;
     protected HealthPoints targHP;
     [SerializeField] protected int numberOfAttackAnimations;
     [SerializeField] private float _offsetSpeed = 1;
@@ -108,18 +106,17 @@ public abstract class Unit : MonoBehaviour
         {
             if (gameObject.tag == "Player")
             {
-                FindObjectOfType<GameManger>().Win();
+                FindObjectOfType<UIMethods>().Win();
             }
             _rb.velocity = Vector3.zero;
-            _animator?.SetInteger("Attack", 0);
+            _animator.SetInteger("Attack", 0);
         }
         
     }
 
     public virtual void Attack()
     {
-        //targHP?.TakeDamage(_damage,ref isAttack);
-        _animator?.SetInteger("Attack", UnityEngine.Random.Range(1, numberOfAttackAnimations + 1));
+        _animator.SetInteger("Attack", UnityEngine.Random.Range(1, numberOfAttackAnimations + 1));
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -135,7 +132,9 @@ public abstract class Unit : MonoBehaviour
     {
         if (target != null)
         {
-            if (collision.transform.tag == gameObject.tag && Vector3.Distance(transform.position, target.transform.position) > _minDistToAttack
+            if (collision.transform.tag == gameObject.tag 
+                    && 
+                Vector3.Distance(transform.position, target.transform.position) > _minDistToAttack
                     &&
                 Vector3.Distance(collision.transform.position, target.transform.position) <= _minDistToAttack)
             {

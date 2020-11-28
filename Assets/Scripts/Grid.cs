@@ -5,13 +5,14 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
+    public bool InTest;
     [Header("Grid Params")]
-    [SerializeField] private Vector2Int _gridSize;
-    [SerializeField] private GridUnit[,] _grid;
-    [SerializeField] private GameObject _cellPrefab;
+    [SerializeField] private Vector2Int gridSize;
+    private GridUnit[,] _grid;
+    [SerializeField] private GameObject cellPrefab;
 
     private GridUnit _flyingUnit;
-    private GameObject[,] _cells;
+    private MeshRenderer[,] _cells;
 
 
     private List<Renderer> _activeCells = new List<Renderer>();
@@ -23,7 +24,7 @@ public class Grid : MonoBehaviour
     [SerializeField] private GridUnit spearmanPrefab;
     [SerializeField] private GridUnit catapultPrefab;
 
-    [SerializeField] private GridUnit currentUnit;
+    private GridUnit _currentUnit;
 
     private int x;
     private int y;
@@ -32,13 +33,14 @@ public class Grid : MonoBehaviour
 
     private Color origCol;
     private bool available;
-    private GameManger _gameManger;
-    public bool InTest;
+    private UIMethods _ui;
 
     private bool _isPlacementMode = true;
+    private float _offsetToCentreUnit = 0.27f;
 
     public bool IsPlacementMode { get => _isPlacementMode; set => _isPlacementMode = value; }
-    public GridUnit FlyingUnit { 
+    public GridUnit FlyingUnit 
+    { 
         get => _flyingUnit; 
         
         set
@@ -50,27 +52,37 @@ public class Grid : MonoBehaviour
             }
         }
 
-        }
+    }
 
     public Camera CurrentCamera { get => currentCamera; set => currentCamera = value; }
+
+    public MeshRenderer[,] Cells => _cells;
 
     private void Start()
     {
         CurrentCamera = Camera.main;
-        _gameManger = FindObjectOfType<GameManger>();
-        origCol = _cellPrefab.GetComponent<Renderer>().sharedMaterial.color;
-        _grid = new GridUnit[_gridSize.x, _gridSize.y];
-        _cells = new GameObject[_gridSize.x, _gridSize.y];
-        for (int x = 0; x < _gridSize.x; x++)
+        _ui = FindObjectOfType<UIMethods>();
+        origCol = cellPrefab.GetComponent<Renderer>().sharedMaterial.color;
+        _grid = new GridUnit[gridSize.x, gridSize.y];
+        _cells = new MeshRenderer[gridSize.x, gridSize.y];
+        CreateGrid();
+    }
+
+    private void CreateGrid()
+    {
+        for (int x = 0; x < gridSize.x; x++)
         {
-            for (int y = 0; y < _gridSize.y; y++)
+            for (int y = 0; y < gridSize.y; y++)
             {
-                _cells[x,y] = Instantiate(_cellPrefab, new Vector3(x + transform.position.x,
-                            transform.position.y, y + transform.position.z), Quaternion.identity);
+                Cells[x, y] = Instantiate(cellPrefab, 
+                    new Vector3(x + transform.position.x,
+                                          transform.position.y, 
+                                         y + transform.position.z), 
+                    Quaternion.identity).GetComponent<MeshRenderer>();
             }
         }
     }
-    
+
 
     public void StartPlacingUnit()
     {
@@ -117,7 +129,7 @@ public class Grid : MonoBehaviour
                 _flyingUnit = Instantiate(catapultPrefab);
             }
         }
-    } //Установка юнитов по клавишам
+    } 
     private void Update()
     {
         Placement();
@@ -128,22 +140,13 @@ public class Grid : MonoBehaviour
         }
     }
 
-    private void MoveUnit()
+    private void MoveUnit()    
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             if(FlyingUnit != null)
             {
-                for (int x = 0; x < _gridSize.x; x++)
-                {
-                    for (int y = 0; y < _gridSize.y; y++)
-                    {
-                        if (_cells[x, y].GetComponent<Renderer>().material.color != origCol)
-                        {
-                            _cells[x, y].GetComponent<Renderer>().material.color = origCol;
-                        }
-                    }
-                }
+                ResetCellsColor();
                 Destroy(_flyingUnit.gameObject);
                 _flyingUnit = null;
             }
@@ -157,14 +160,14 @@ public class Grid : MonoBehaviour
                 if (unit && unit != _flyingUnit)
                 {
                     unit.GetComponentInChildren<Unit>().UnitPrice = 0;
-                    for (int x = 0; x < _gridSize.x; x++)
+                    for (int x = 0; x < gridSize.x; x++)
                     {
-                        for (int y = 0; y < _gridSize.y; y++)
+                        for (int y = 0; y < gridSize.y; y++)
                         { 
                             if(_grid[x,y] == unit)
                             {
                                 _grid[x,y] = null;
-                                _cells[x,y].GetComponent<Renderer>().material.color = origCol;
+                                Cells[x,y].material.color = origCol;
                             }
                         }
                     }
@@ -174,7 +177,21 @@ public class Grid : MonoBehaviour
         }
     }
 
-    private void Placement() // Изменение позиции юнита
+    private void ResetCellsColor()
+    {
+        for (int x = 0; x < gridSize.x; x++)
+        {
+            for (int y = 0; y < gridSize.y; y++)
+            {
+                if (Cells[x, y].material.color != origCol && !_grid[x, y])
+                {
+                    Cells[x, y].material.color = origCol;
+                }
+            }
+        }
+    }
+
+    private void Placement() 
     {
         StartPlacingUnit();
         if (_flyingUnit != null)
@@ -184,33 +201,28 @@ public class Grid : MonoBehaviour
             if (groundPlane.Raycast(ray, out float position))
             {
                 Vector3 worldPosition = ray.GetPoint(position);
-                if(CheckAvialable(Mathf.RoundToInt(worldPosition.x) - (int)transform.position.x, 
-                                  Mathf.RoundToInt(worldPosition.z) - (int)transform.position.z))
-                {
-                    x = Mathf.RoundToInt(worldPosition.x) - (int)transform.position.x;
-                    y = Mathf.RoundToInt(worldPosition.z) - (int)transform.position.z;
-                }
-                
-                available = CheckAvialable(x, y);
+                x = Mathf.RoundToInt(worldPosition.x) - (int)transform.position.x;
+                y = Mathf.RoundToInt(worldPosition.z) - (int)transform.position.z;
 
+                available = CheckAvialable(x, y);
                 _flyingUnit.SetTransparent(available);
-                ChangeColor(x, y, available,_flyingUnit.Size);
+                ChangeCellsColor(x, y, available,_flyingUnit.Size);
             }
 
         }
     }
 
-    public void SetCurrentUnit(GridUnit unit) //Установка текущего выбранного юнита
+    public void SetCurrentUnit(GridUnit unit) 
     {
-        currentUnit = unit;
+        _currentUnit = unit;
         if(_flyingUnit != null)
         {
             Destroy(_flyingUnit.gameObject);
         }
-        _flyingUnit = Instantiate(currentUnit);
+        _flyingUnit = Instantiate(_currentUnit);
     }
 
-    private void ChangeColor(int x, int y, bool available, Vector2 size)
+    private void ChangeCellsColor(int x, int y, bool available, Vector2 size)
     {
         if (available && !IsPlaceTaken(x, y))
         {
@@ -228,23 +240,23 @@ public class Grid : MonoBehaviour
                 {
                     for (var y1 = 0; y1 < size.y; y1++)
                     {
-                        if (x - x1 / 2 >= 0 && y - y1 / 2 >= 0 && x + x1 / 2 < _gridSize.x && y + y1 / 2 < _gridSize.y)
+                        if (x - x1 / 2 >= 0 && y - y1 / 2 >= 0 && x + x1 / 2 < gridSize.x && y + y1 / 2 < gridSize.y)
                         {
                             if (!_grid[x - x1 / 2, y - y1 / 2])
                             {
-                                _activeCells.Add(_cells[x - x1 / 2, y - y1 / 2].GetComponent<MeshRenderer>());
+                                _activeCells.Add(Cells[x - x1 / 2, y - y1 / 2]);
                             }
                             if(!_grid[x + x1 / 2, y - y1 / 2])
                             {
-                                _activeCells.Add(_cells[x + x1 / 2, y - y1 / 2].GetComponent<MeshRenderer>());
+                                _activeCells.Add(Cells[x + x1 / 2, y - y1 / 2]);
                             }
                             if(!_grid[x - x1 / 2, y + y1 / 2])
                             {
-                                _activeCells.Add(_cells[x - x1 / 2, y + y1 / 2].GetComponent<MeshRenderer>());
+                                _activeCells.Add(Cells[x - x1 / 2, y + y1 / 2]);
                             }
                             if(!_grid[x + x1 / 2, y + y1 / 2])
                             {
-                                _activeCells.Add(_cells[x + x1 / 2, y + y1 / 2].GetComponent<MeshRenderer>());
+                                _activeCells.Add(Cells[x + x1 / 2, y + y1 / 2]);
                             }    
                         }
                     }
@@ -256,7 +268,7 @@ public class Grid : MonoBehaviour
                 {
                     for (var y1 = 0; y1 < size.y; y1++)
                     {
-                        _activeCells.Add(_cells[x + x1, y + y1].GetComponent<MeshRenderer>());
+                        _activeCells.Add(Cells[x + x1, y + y1]);
                     }
                 }
             }
@@ -275,29 +287,29 @@ public class Grid : MonoBehaviour
                 }
             }
         }
-    }//Изменение цвета клетки
+    }
 
     private bool CheckAvialable(int x, int y)
     {
         bool available = true;
         if(_flyingUnit.Size.x * _flyingUnit.Size.y % 2 != 0)
         {
-            if (x < 0 || x + _flyingUnit.Size.x / 2 + 1 > _gridSize.x  || x -_flyingUnit.Size.x / 2  < 0 )
+            if (x < 0 || x + _flyingUnit.Size.x / 2 + 1 > gridSize.x  || x -_flyingUnit.Size.x / 2  < 0 )
             {
                 available = false;
             }
-            if (y < 0 || y + _flyingUnit.Size.y / 2 + 1 > _gridSize.y || y - _flyingUnit.Size.y / 2  < 0)
+            if (y < 0 || y + _flyingUnit.Size.y / 2 + 1 > gridSize.y || y - _flyingUnit.Size.y / 2  < 0)
             {
                 available = false;
             }
         }
         else
         {
-            if (x < 0 || x > _gridSize.x - _flyingUnit.Size.x)
+            if (x < 0 || x > gridSize.x - _flyingUnit.Size.x)
             {
                 available = false;
             }
-            if (y < 0 || y > _gridSize.y - _flyingUnit.Size.y)
+            if (y < 0 || y > gridSize.y - _flyingUnit.Size.y)
             {
                 available = false;
             }
@@ -307,22 +319,12 @@ public class Grid : MonoBehaviour
             available = false;
         }
 
-        if (!(x < _gridSize.x && x >= 0 && y < _gridSize.y && y >= 0))
-        {
-            _flyingUnit.transform.position = new Vector3(x - 0.27f + (int)transform.position.x, _flyingUnit.transform.position.y,
-                                                         y + (int)transform.position.z);
-        }
-        else
-        {
-            if (!IsPlaceTaken(x, y))
-            {
-                _flyingUnit.transform.position = new Vector3(x - 0.27f + (int)transform.position.x, _flyingUnit.transform.position.y,
-                                                             y + (int)transform.position.z);
-            }
-        }
+        Vector3 newUnitPosition = new Vector3(x - _offsetToCentreUnit + (int)transform.position.x, _flyingUnit.transform.position.y,
+            y + (int)transform.position.z);
+        _flyingUnit.transform.position = newUnitPosition;
 
         return available;
-    } //Проверка координат на возможность установки
+    } 
 
     private bool IsPlaceTaken(int placeX, int placeY)
     {
@@ -332,7 +334,7 @@ public class Grid : MonoBehaviour
             {
                 for (int y1 = 0; y1 < _flyingUnit.Size.y; y1++)
                 {
-                    if (_gridSize.x > (placeX + x1 / 2) && _gridSize.y > (placeY + y1 / 2) && (placeY + y1 / 2) > 0
+                    if (gridSize.x > (placeX + x1 / 2) && gridSize.y > (placeY + y1 / 2) && (placeY + y1 / 2) > 0
                         && (placeX + x1 / 2) > 0)
                     {
                         try
@@ -356,7 +358,7 @@ public class Grid : MonoBehaviour
             {
                 for (int y1 = 0; y1 < _flyingUnit.Size.y; y1++)
                 {
-                    if (_gridSize.x > placeX + x1 && _gridSize.y > placeY + y1)
+                    if (gridSize.x > placeX + x1 && gridSize.y > placeY + y1)
                     {
                         if (_grid[placeX + x1, placeY + y1])
                         {
@@ -367,11 +369,11 @@ public class Grid : MonoBehaviour
             }
         }
         return false;
-    } //Преверка клетки на занятость другим юнитом
+    }
 
-    public void PlaceFlyingUnit() //Установка юнита
+    public void PlaceFlyingUnit() 
     {
-        if(available &&_flyingUnit != null && _gameManger.MoneyBalance - _flyingUnit.GetComponentInChildren<Unit>().UnitPrice >= 0)
+        if(available &&_flyingUnit != null && _ui.MoneyBalance - _flyingUnit.GetComponentInChildren<Unit>().UnitPrice >= 0)
         {
             if (_flyingUnit.Size.x * _flyingUnit.Size.y % 2 != 0 && _flyingUnit.Size.x * _flyingUnit.Size.y != 1)
             {
@@ -379,16 +381,12 @@ public class Grid : MonoBehaviour
                 {
                     for (int y1 = 0; y1 < _flyingUnit.Size.y; y1++)
                     {
-                        if (x - x1 / 2 >= 0 && y - y1 / 2 >= 0 && x + x1 / 2 < _gridSize.x && y + y1 / 2 < _gridSize.y)
+                        if (x - x1 / 2 >= 0 && y - y1 / 2 >= 0 && x + x1 / 2 < gridSize.x && y + y1 / 2 < gridSize.y)
                         {
-                            _grid[x + x1 / 2, y + y1 / 2] = _flyingUnit;
-                            _grid[x - x1 / 2, y - y1 / 2] = _flyingUnit;
-                            _grid[x + x1 / 2, y - y1 / 2] = _flyingUnit;
-                            _grid[x - x1 / 2, y + y1 / 2] = _flyingUnit;
-                            _cells[x + x1 / 2, y + y1 / 2].GetComponent<Renderer>().material.color = Color.grey;
-                            _cells[x - x1 / 2, y - y1 / 2].GetComponent<Renderer>().material.color = Color.grey;
-                            _cells[x + x1 / 2, y - y1 / 2].GetComponent<Renderer>().material.color = Color.grey;
-                            _cells[x - x1 / 2, y + y1 / 2].GetComponent<Renderer>().material.color = Color.grey;
+                            AssignUnitToCell(x1 / 2,y1 / 2);
+                            AssignUnitToCell(-x1 / 2, -y1 / 2);
+                            AssignUnitToCell(x1 / 2, -y1 / 2);
+                            AssignUnitToCell(-x1 / 2, y1 / 2);
                         }
                     }
                 }
@@ -400,25 +398,34 @@ public class Grid : MonoBehaviour
                     for (int y1 = 0; y1 < _flyingUnit.Size.y; y1++)
                     {
                         _grid[x + x1, y + y1] = _flyingUnit;
-                        _cells[x + x1, y + y1].GetComponent<Renderer>().material.color = Color.grey;
+                        Cells[x + x1, y + y1].material.color = Color.grey;
                     }
                 }
             }
-            _gameManger.MoneyBalance -= _flyingUnit.GetComponentInChildren<Unit>().UnitPrice;
+            _ui.MoneyBalance -= _flyingUnit.GetComponentInChildren<Unit>().UnitPrice;
             _flyingUnit.GetComponentInChildren<BoxCollider>().enabled = true;
             _flyingUnit.SetColorNormal();
-            _flyingUnit = Instantiate(currentUnit);
+            Vector3 unitPosition = new Vector3(x - _offsetToCentreUnit + (int)transform.position.x, _flyingUnit.transform.position.y,
+                y + (int)transform.position.z);
+            _flyingUnit = Instantiate(_currentUnit,unitPosition,Quaternion.identity);
             _activeCells.Clear();
             _isPlacementMode = true;
         }
         
     }
 
+    private void AssignUnitToCell(int x1, int y1)
+    {
+        _grid[x + x1, y + y1] = _flyingUnit;
+        Cells[x + x1,y + y1].material.color = Color.grey;
+    }
+    
+
     private void OnDrawGizmos()
     {
-        for (int x1 = 0; x1 < _gridSize.x; x1++)
+        for (int x1 = 0; x1 < gridSize.x; x1++)
         {
-            for (int y1 = 0; y1 < _gridSize.y; y1++)
+            for (int y1 = 0; y1 < gridSize.y; y1++)
             {
                 Gizmos.DrawCube(new Vector3(x1 + transform.position.x,
                                            transform.position.y, y1 + transform.position.z), new Vector3(.8f, .8f, .8f));
@@ -426,19 +433,19 @@ public class Grid : MonoBehaviour
         }
     }
 
-    public void ClearUnits() //Очистка юнитов
+    public void ClearUnits() 
     {
-        for (int x1 = 0; x1 < _gridSize.x; x1++)
+        for (int x1 = 0; x1 < gridSize.x; x1++)
         {
-            for (int y1 = 0; y1 < _gridSize.y; y1++)
+            for (int y1 = 0; y1 < gridSize.y; y1++)
             {
                 if(_grid[x1,y1])
                 {
                     Destroy(_grid[x1, y1].gameObject);
-                    _cells[x1, y1].GetComponent<Renderer>().material.color = origCol;
+                    Cells[x1, y1].material.color = origCol;
                 }
             }
         }
-        _gameManger.RefreshBalance();
+        _ui.RefreshBalance();
     }
 }

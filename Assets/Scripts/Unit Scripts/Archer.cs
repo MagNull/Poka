@@ -74,7 +74,7 @@ public class Archer : Unit
             _animator?.SetInteger("Attack", 0);
             if (gameObject.tag == "Player")
             {
-                FindObjectOfType<GameManger>().Win();
+                FindObjectOfType<UIMethods>().Win();
             }
             _rb.velocity = Vector3.zero;
         }
