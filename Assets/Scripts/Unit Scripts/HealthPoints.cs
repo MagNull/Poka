@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class HealthPoints : MonoBehaviour
 {
-    [SerializeField] private float _health = 5;
-    [SerializeField] private ParticleSystem _blood;
+    [SerializeField] private float health = 5;
+    [SerializeField] private ParticleSystem blood;
 
     public void TakeDamage(float damage,ref bool flag)
     {
@@ -16,8 +16,8 @@ public class HealthPoints : MonoBehaviour
             {
                 if (GetComponent<Unit>() && GetComponent<Unit>().enabled == true)
                 {
-                    _health -= damage;
-                    if (_health <= 0)
+                    health -= damage;
+                    if (health <= 0)
                     {
                         flag = false;
                         GetComponent<Animator>().SetInteger("Attack", -1);
@@ -25,7 +25,7 @@ public class HealthPoints : MonoBehaviour
                         GetComponent<Rigidbody>().isKinematic = true;
                         Destroy(gameObject, 1);
                     }
-                    _blood.Play();
+                    blood.Play();
                 }
             }
         }
@@ -43,8 +43,8 @@ public class HealthPoints : MonoBehaviour
         {
             if (GetComponent<Unit>() && GetComponent<Unit>().enabled == true)
             {
-                _health -= damage;
-                if (_health <= 0)
+                health -= damage;
+                if (health <= 0)
                 {
                     GetComponent<Animator>().SetInteger("Attack", -1);
                     Destroy(GetComponent<Unit>());
@@ -53,7 +53,7 @@ public class HealthPoints : MonoBehaviour
                 }
                 else
                 {
-                    _blood.Play();
+                    blood.Play();
                 }
             }
         }

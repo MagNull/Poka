@@ -9,19 +9,19 @@ public abstract class Unit : MonoBehaviour
 {
     public int UnitPrice;
     public int Damage = 1;
-    protected List<Unit> _enemys = new List<Unit>();
-    [SerializeField] protected float _minDistToAttack = 5;
-    [SerializeField] protected float _speed;
+    [SerializeField] protected float minDistToAttack = 5;
+    [SerializeField] protected float speed;
     [SerializeField] protected float attackDelay;
     [SerializeField] protected float minAttackDelay;
     [SerializeField] protected float maxAttackDelay;
+    [SerializeField] protected int numberOfAttackAnimations;
+    [SerializeField] private float offsetSpeed = 1;
     protected Animator _animator;
     protected Rigidbody _rb;
-    protected Unit target;
-    protected HealthPoints targHP;
-    [SerializeField] protected int numberOfAttackAnimations;
-    [SerializeField] private float _offsetSpeed = 1;
+    protected Unit _target;
+    protected HealthPoints _targHP;
     private int _offsetDirection;
+    protected List<Unit> _enemys = new List<Unit>();
 
     protected virtual void Awake()
     {
@@ -75,19 +75,19 @@ public abstract class Unit : MonoBehaviour
                     nearest = enemy;
             }
         }
-        target = nearest;
+        _target = nearest;
     }
 
     protected virtual void Work()
     {
         FindTarget();
-        if(target != null)
+        if(_target != null)
         {
-            Vector3 lookTarget = (new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z) - transform.position).normalized;
+            Vector3 lookTarget = (new Vector3(_target.transform.position.x, transform.position.y, _target.transform.position.z) - transform.position).normalized;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookTarget), Time.deltaTime);
-            if (Vector3.Distance(gameObject.transform.position, target.transform.position) <= _minDistToAttack)
+            if (Vector3.Distance(gameObject.transform.position, _target.transform.position) <= minDistToAttack)
             {
-                targHP = target.GetComponent<HealthPoints>();
+                _targHP = _target.GetComponent<HealthPoints>();
                 _rb.velocity = Vector3.zero;
                 if (_animator?.GetInteger("Attack") == 0)
                 {
@@ -98,8 +98,8 @@ public abstract class Unit : MonoBehaviour
             else
             {
                 _animator?.SetInteger("Attack", 0);
-                Vector3 movementDirection = (target.transform.position - transform.position).normalized;
-                _rb.velocity = movementDirection * _speed;
+                Vector3 movementDirection = (_target.transform.position - transform.position).normalized;
+                _rb.velocity = movementDirection * speed;
             }
         }
         else
@@ -130,15 +130,15 @@ public abstract class Unit : MonoBehaviour
 
     private void Offensive(Collision collision)
     {
-        if (target != null)
+        if (_target != null)
         {
             if (collision.transform.tag == gameObject.tag 
                     && 
-                Vector3.Distance(transform.position, target.transform.position) > _minDistToAttack
+                Vector3.Distance(transform.position, _target.transform.position) > minDistToAttack
                     &&
-                Vector3.Distance(collision.transform.position, target.transform.position) <= _minDistToAttack)
+                Vector3.Distance(collision.transform.position, _target.transform.position) <= minDistToAttack)
             {
-                transform.position = Vector3.Lerp(transform.position, transform.position + transform.right * _offsetSpeed * _offsetDirection, Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, transform.position + transform.right * offsetSpeed * _offsetDirection, Time.deltaTime);
             }
         }
     }

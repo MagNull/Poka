@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 public class EnemyGrid : MonoBehaviour
 {
-    [SerializeField] private Vector2Int _gridSize;
+    [SerializeField] private Vector2Int gridSize;
     [SerializeField] private Unit[,] grid;
-    [SerializeField] private LevelConfig _levelConfig;
+    [SerializeField] private LevelConfig levelConfig;
 
     [Header("Units Prefabs")]
     [SerializeField] private Unit warrior;
@@ -16,16 +16,16 @@ public class EnemyGrid : MonoBehaviour
 
     private void Awake()
     {
-        grid = new Unit[_gridSize.x, _gridSize.y];
+        grid = new Unit[gridSize.x, gridSize.y];
     }
 
     public void SpawnEnemys()
     {
-        for (int x = 0; x < _gridSize.x; x++)
+        for (int x = 0; x < gridSize.x; x++)
         {
-            for (int y = 0; y < _gridSize.y; y++)
+            for (int y = 0; y < gridSize.y; y++)
             {
-                switch (_levelConfig.GetUnit(x, y))
+                switch (levelConfig.GetUnit(x, y))
                 {
                     case "0":
                         {
@@ -98,15 +98,15 @@ public class EnemyGrid : MonoBehaviour
 
     public void SetLevelConfig(LevelConfig config)
     {
-        _levelConfig = config;
+        levelConfig = config;
         SpawnEnemys();
     }
 
     public void ClearUnits()
     {
-        for (int x = 0; x < _gridSize.x; x++)
+        for (int x = 0; x < gridSize.x; x++)
         {
-            for (int y = 0; y < _gridSize.y; y++)
+            for (int y = 0; y < gridSize.y; y++)
             {
                 if(grid[x,y] != null)
                 {
@@ -119,9 +119,9 @@ public class EnemyGrid : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        for (int x = 0; x < _gridSize.x; x++)
+        for (int x = 0; x < gridSize.x; x++)
         {
-            for (int y = 0; y < _gridSize.y; y++)
+            for (int y = 0; y < gridSize.y; y++)
             {
                 Gizmos.DrawCube(new Vector3(x + transform.position.x,
                                            transform.position.y, y + transform.position.z), new Vector3(.8f, .8f, .8f));

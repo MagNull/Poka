@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class Spearman : Unit
 {
-    [SerializeField] private float _backStepSpeed;
-    [SerializeField] private float _minDistToBackStep;
+    [SerializeField] private float backStepSpeed;
+    [SerializeField] private float minDistToBackStep;
 
     protected override void Work()
     {
         FindTarget();
-        if (target != null)
+        if (_target != null)
         {
-            Vector3 lookTarget = (new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z) - transform.position).normalized;
+            Vector3 lookTarget = (new Vector3(_target.transform.position.x, transform.position.y, _target.transform.position.z) - transform.position).normalized;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookTarget), Time.deltaTime);
-            if (Vector3.Distance(gameObject.transform.position, target.transform.position) <= _minDistToAttack)
+            if (Vector3.Distance(gameObject.transform.position, _target.transform.position) <= minDistToAttack)
             {
-                targHP = target.GetComponent<HealthPoints>();
-                if(Vector3.Distance(gameObject.transform.position, target.transform.position) <= _minDistToBackStep)
+                _targHP = _target.GetComponent<HealthPoints>();
+                if(Vector3.Distance(gameObject.transform.position, _target.transform.position) <= minDistToBackStep)
                 {
-                    _rb.velocity = -transform.forward * _backStepSpeed;
+                    _rb.velocity = -transform.forward * backStepSpeed;
                 }
                 else
                 {
@@ -34,8 +34,8 @@ public class Spearman : Unit
             else
             {
                 _animator?.SetInteger("Attack", 0);
-                Vector3 movementDirection = (target.transform.position - transform.position).normalized;
-                _rb.velocity = movementDirection * _speed;
+                Vector3 movementDirection = (_target.transform.position - transform.position).normalized;
+                _rb.velocity = movementDirection * speed;
             }
         }
         else

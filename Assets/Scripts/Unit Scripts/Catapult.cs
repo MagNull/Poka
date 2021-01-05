@@ -7,23 +7,23 @@ public class Catapult : Archer
     protected override void Work()
     {
         FindTarget();
-        if (target != null)
+        if (_target != null)
         {
-            Vector3 lookTarget = (new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z) - transform.position).normalized;
+            Vector3 lookTarget = (new Vector3(_target.transform.position.x, transform.position.y, _target.transform.position.z) - transform.position).normalized;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookTarget), Time.deltaTime);
-            if (Vector3.Distance(gameObject.transform.position, target.transform.position) <= _minDistToAttack)
+            if (Vector3.Distance(gameObject.transform.position, _target.transform.position) <= minDistToAttack)
             {
-                if (Vector3.Distance(gameObject.transform.position, target.transform.position) <= _meleeAttackDist)
+                if (Vector3.Distance(gameObject.transform.position, _target.transform.position) <= meleeAttackDist)
                 {
                     _animator.SetInteger("Attack", 2);
-                    targHP = target.GetComponent<HealthPoints>();
+                    _targHP = _target.GetComponent<HealthPoints>();
                     _rb.velocity = Vector3.zero;
                     _animator.speed = 5 / attackDelay;
                 }
                 else
                 {
                     _animator.SetInteger("Attack", 1);
-                    targHP = target.GetComponent<HealthPoints>();
+                    _targHP = _target.GetComponent<HealthPoints>();
                     _rb.velocity = Vector3.zero;
                     _animator.speed = 2 / attackDelay;
                 }
@@ -31,8 +31,8 @@ public class Catapult : Archer
             else
             {
                 _animator?.SetInteger("Attack", 0);
-                Vector3 movementDirection = (target.transform.position - transform.position).normalized;
-                _rb.velocity = movementDirection * _speed;
+                Vector3 movementDirection = (_target.transform.position - transform.position).normalized;
+                _rb.velocity = movementDirection * speed;
             }
         }
         else
@@ -49,13 +49,13 @@ public class Catapult : Archer
     {
         if (_animator.GetInteger("Attack") == 1)
         {
-            Rigidbody arrowRb = Instantiate(_arrowRb, _spawnTransform.position, Quaternion.identity);
-            float speed = CalculateTrajectory(targHP);
-            arrowRb.velocity = _spawnTransform.forward * speed;
+            Rigidbody arrowRb = Instantiate(base.arrowRb, spawnTransform.position, Quaternion.identity);
+            float speed = CalculateTrajectory(_targHP);
+            arrowRb.velocity = spawnTransform.forward * speed;
         }
         else if(_animator.GetInteger("Attack") == 2)
         {
-            targHP?.TakeDamage(_meleeDamage);
+            _targHP?.TakeDamage(meleeDamage);
         }
     }
 }

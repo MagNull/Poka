@@ -7,19 +7,19 @@ public class Shielder : Unit
 {
     public float ShieldAttackDist;
     public bool canAttack = true;
-    private float time = 0;
+    private float _time = 0;
 
     protected override void Work()
     {
         FindTarget();
-        if (target != null)
+        if (_target != null)
         {
-            Vector3 movementDirection = (target.transform.position - transform.position).normalized;
-            Vector3 lookTarget = (new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z) - transform.position).normalized;
+            Vector3 movementDirection = (_target.transform.position - transform.position).normalized;
+            Vector3 lookTarget = (new Vector3(_target.transform.position.x, transform.position.y, _target.transform.position.z) - transform.position).normalized;
             transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(lookTarget),Time.deltaTime);
-            if (Vector3.Distance(gameObject.transform.position, target.transform.position) <= _minDistToAttack)
+            if (Vector3.Distance(gameObject.transform.position, _target.transform.position) <= minDistToAttack)
             {
-                targHP = target.GetComponent<HealthPoints>();
+                _targHP = _target.GetComponent<HealthPoints>();
                 _rb.velocity = Vector3.zero;
                 if (canAttack)
                 {
@@ -32,7 +32,7 @@ public class Shielder : Unit
             }
             else
             {
-                _rb.velocity = movementDirection * _speed;
+                _rb.velocity = movementDirection * speed;
             }
         }
         else
@@ -48,14 +48,14 @@ public class Shielder : Unit
 
     private void FixedUpdate()
     {
-        if (time >= attackDelay)
+        if (_time >= attackDelay)
         {
-            time = 0;
+            _time = 0;
             canAttack = true;
         }
         else if(!canAttack)
         {
-            time += Time.deltaTime;
+            _time += Time.deltaTime;
         }
     }
 }

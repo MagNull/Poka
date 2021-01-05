@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ButtonLighter : MonoBehaviour
 {
-    private UnityEngine.UI.Image _image;
-    [SerializeField] private UnityEngine.UI.Image _icon;
+    [SerializeField] private UnityEngine.UI.Image icon;
     private bool _state;
+    private UnityEngine.UI.Image _image;
 
     private void Awake()
     {
@@ -21,18 +21,18 @@ public class ButtonLighter : MonoBehaviour
             {
                 _image.color = Color.white;
                 GetComponent<UnityEngine.UI.Button>().interactable = true;
-                if (_icon)
+                if (icon)
                 {
-                    _icon.color = Color.white;
+                    icon.color = Color.white;
                 }
             }
             else
             {
                 _image.color = new Color(.3f, .3f, .3f);
                 GetComponent<UnityEngine.UI.Button>().interactable = false;
-                if (_icon)
+                if (icon)
                 {
-                    _icon.color = Color.red;
+                    icon.color = Color.red;
                 }
             }
         }

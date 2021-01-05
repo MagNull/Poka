@@ -9,9 +9,9 @@ public class UIMethods : MonoBehaviour
     public bool isDebugMode = false;
 
     [Header("Level Fields")]
-    private LevelConfig _currentLevel;
     [SerializeField] private LevelConfig[] levels;
     [SerializeField] private ButtonLighter[] levelButtons;
+    private LevelConfig _currentLevel;
     private int _moneyBalance;
 
     [Header("UI Fields")]

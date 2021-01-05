@@ -4,44 +4,44 @@ using UnityEngine;
 
 public class Archer : Unit
 {
-    [SerializeField] protected Rigidbody _arrowRb;
-    protected float _shootAngle = 45;
-    [SerializeField] protected float _minAngle;
-    [SerializeField] protected float _maxAngle;
-    [SerializeField] protected Transform _spawnTransform;
-    [SerializeField] protected float _meleeAttackDist;
-    [SerializeField] protected int _meleeDamage;
+    [SerializeField] protected Rigidbody arrowRb;
+    [SerializeField] protected float minAngle;
+    [SerializeField] protected float maxAngle;
+    [SerializeField] protected Transform spawnTransform;
+    [SerializeField] protected float meleeAttackDist;
+    [SerializeField] protected int meleeDamage;
     [SerializeField] protected GameObject bow;
     [SerializeField] protected GameObject knife;
+    protected float _shootAngle = 45;
 
     protected override void Awake()
     {
         base.Awake();
-        _shootAngle = UnityEngine.Random.Range(_minAngle, _maxAngle);
+        _shootAngle = UnityEngine.Random.Range(minAngle, maxAngle);
         FindTarget();
     }
     protected override void Update()
     {
-        _spawnTransform.localEulerAngles = new Vector3(-_shootAngle, 0, 0);
+        spawnTransform.localEulerAngles = new Vector3(-_shootAngle, 0, 0);
         base.Update();
     }
     protected override void Work()
     {
         FindTarget();
-        if (target != null)
+        if (_target != null)
         {
-            Vector3 lookTarget = (new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z) - transform.position).normalized;
+            Vector3 lookTarget = (new Vector3(_target.transform.position.x, transform.position.y, _target.transform.position.z) - transform.position).normalized;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookTarget), Time.deltaTime);
-            if (Vector3.Distance(gameObject.transform.position, target.transform.position) <= _minDistToAttack)
+            if (Vector3.Distance(gameObject.transform.position, _target.transform.position) <= minDistToAttack)
             {
-                if(Vector3.Distance(gameObject.transform.position, target.transform.position) <= _meleeAttackDist)
+                if(Vector3.Distance(gameObject.transform.position, _target.transform.position) <= meleeAttackDist)
                 {
                     if(knife.activeInHierarchy == false)
                     {
                         knife.SetActive(true);
                         bow.SetActive(false);
                     }
-                    targHP = target.GetComponent<HealthPoints>();
+                    _targHP = _target.GetComponent<HealthPoints>();
                     _rb.velocity = Vector3.zero;
                     _animator?.SetInteger("Attack", 2);
                     _animator.speed = 2 / attackDelay;
@@ -53,7 +53,7 @@ public class Archer : Unit
                         knife.SetActive(false);
                         bow.SetActive(true);
                     }
-                    targHP = target.GetComponent<HealthPoints>();
+                    _targHP = _target.GetComponent<HealthPoints>();
                     _rb.velocity = Vector3.zero;
                     if (_animator?.GetInteger("Attack") == 0)
                     {
@@ -65,8 +65,8 @@ public class Archer : Unit
             else
             {
                 _animator?.SetInteger("Attack", 0);
-                Vector3 movementDirection = (target.transform.position - transform.position).normalized;
-                _rb.velocity = movementDirection * _speed;
+                Vector3 movementDirection = (_target.transform.position - transform.position).normalized;
+                _rb.velocity = movementDirection * speed;
             }
         }
         else
@@ -83,13 +83,13 @@ public class Archer : Unit
     {
         if(bow.activeSelf)
         {
-            Rigidbody arrowRb = Instantiate(_arrowRb, _spawnTransform.position, Quaternion.identity);
-            float speed = CalculateTrajectory(targHP);
-            arrowRb.velocity = _spawnTransform.forward * speed;
+            Rigidbody arrowRb = Instantiate(this.arrowRb, spawnTransform.position, Quaternion.identity);
+            float speed = CalculateTrajectory(_targHP);
+            arrowRb.velocity = spawnTransform.forward * speed;
         }
         else
         {
-            targHP?.TakeDamage(_meleeDamage);
+            _targHP?.TakeDamage(meleeDamage);
         }
         
     }

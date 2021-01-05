@@ -5,23 +5,23 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private int _damage;
+    [SerializeField] private int damage;
+    [SerializeField] private bool isDestroy;
+    [SerializeField] private float damageRadius;
+    [SerializeField] private ParticleSystem explosionVFX;
     private Rigidbody _rb;
-    [SerializeField] private bool _isDestroy;
-    [SerializeField] private float _damageRadius;
-    [SerializeField] private ParticleSystem _explosionVFX;
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag != gameObject.tag && _isDestroy)
+        if (other.tag != gameObject.tag && isDestroy)
         {
-            other.GetComponent<HealthPoints>()?.TakeDamage(_damage);
+            other.GetComponent<HealthPoints>()?.TakeDamage(damage);
             Destroy(gameObject);
         }
-        if(other.tag == "Floor" && !_isDestroy)
+        if(other.tag == "Floor" && !isDestroy)
         {
             GetComponent<Collider>().isTrigger = false;
             _rb.velocity = Vector3.zero;
@@ -34,15 +34,15 @@ public class Projectile : MonoBehaviour
         List<Unit> enemys = FindEnemys();
         for(var i = 0; i < enemys.Count; i++)
         {
-            if(Vector3.Distance(enemys[i].transform.position,transform.position) < _damageRadius)
+            if(Vector3.Distance(enemys[i].transform.position,transform.position) < damageRadius)
             {
-               enemys[i].GetComponent<HealthPoints>()?.TakeDamage(_damage *  (1 - (Vector3.Distance(enemys[i].transform.position, transform.position) / 
-                                                                             _damageRadius)));
+               enemys[i].GetComponent<HealthPoints>()?.TakeDamage(damage *  (1 - (Vector3.Distance(enemys[i].transform.position, transform.position) / 
+                                                                             damageRadius)));
             }
         }
         Destroy(_rb);
-        _explosionVFX.Play();
-        Destroy(gameObject, _explosionVFX.startLifetime);
+        explosionVFX.Play();
+        Destroy(gameObject, explosionVFX.startLifetime);
     }
 
     private List<Unit> FindEnemys()

@@ -8,8 +8,9 @@ public class Grid : MonoBehaviour
     public bool InTest;
     [Header("Grid Params")]
     [SerializeField] private Vector2Int gridSize;
-    private GridUnit[,] _grid;
     [SerializeField] private GameObject cellPrefab;
+    private GridUnit[,] _grid;
+
 
     private GridUnit _flyingUnit;
     private MeshRenderer[,] _cells;
@@ -31,8 +32,8 @@ public class Grid : MonoBehaviour
 
     private Camera currentCamera;
 
-    private Color origCol;
-    private bool available;
+    private Color _origCol;
+    private bool _available;
     private UIMethods _ui;
 
     private bool _isPlacementMode = true;
@@ -62,7 +63,7 @@ public class Grid : MonoBehaviour
     {
         CurrentCamera = Camera.main;
         _ui = FindObjectOfType<UIMethods>();
-        origCol = cellPrefab.GetComponent<Renderer>().sharedMaterial.color;
+        _origCol = cellPrefab.GetComponent<Renderer>().sharedMaterial.color;
         _grid = new GridUnit[gridSize.x, gridSize.y];
         _cells = new MeshRenderer[gridSize.x, gridSize.y];
         CreateGrid();
@@ -167,7 +168,7 @@ public class Grid : MonoBehaviour
                             if(_grid[x,y] == unit)
                             {
                                 _grid[x,y] = null;
-                                Cells[x,y].material.color = origCol;
+                                Cells[x,y].material.color = _origCol;
                             }
                         }
                     }
@@ -183,9 +184,9 @@ public class Grid : MonoBehaviour
         {
             for (int y = 0; y < gridSize.y; y++)
             {
-                if (Cells[x, y].material.color != origCol && !_grid[x, y])
+                if (Cells[x, y].material.color != _origCol && !_grid[x, y])
                 {
-                    Cells[x, y].material.color = origCol;
+                    Cells[x, y].material.color = _origCol;
                 }
             }
         }
@@ -204,9 +205,9 @@ public class Grid : MonoBehaviour
                 x = Mathf.RoundToInt(worldPosition.x) - (int)transform.position.x;
                 y = Mathf.RoundToInt(worldPosition.z) - (int)transform.position.z;
 
-                available = CheckAvialable(x, y);
-                _flyingUnit.SetTransparent(available);
-                ChangeCellsColor(x, y, available,_flyingUnit.Size);
+                _available = CheckAvialable(x, y);
+                _flyingUnit.SetTransparent(_available);
+                ChangeCellsColor(x, y, _available,_flyingUnit.Size);
             }
 
         }
@@ -230,7 +231,7 @@ public class Grid : MonoBehaviour
             {
                 foreach(Renderer cell in _activeCells)
                 {
-                    cell.material.color = origCol;
+                    cell.material.color = _origCol;
                 }
             }
             _activeCells.Clear();
@@ -283,7 +284,7 @@ public class Grid : MonoBehaviour
             {
                 foreach (Renderer cell in _activeCells)
                 {
-                    cell.material.color = origCol;
+                    cell.material.color = _origCol;
                 }
             }
         }
@@ -373,7 +374,7 @@ public class Grid : MonoBehaviour
 
     public void PlaceFlyingUnit() 
     {
-        if(available &&_flyingUnit != null && _ui.MoneyBalance - _flyingUnit.GetComponentInChildren<Unit>().UnitPrice >= 0)
+        if(_available &&_flyingUnit != null && _ui.MoneyBalance - _flyingUnit.GetComponentInChildren<Unit>().UnitPrice >= 0)
         {
             if (_flyingUnit.Size.x * _flyingUnit.Size.y % 2 != 0 && _flyingUnit.Size.x * _flyingUnit.Size.y != 1)
             {
@@ -442,7 +443,7 @@ public class Grid : MonoBehaviour
                 if(_grid[x1,y1])
                 {
                     Destroy(_grid[x1, y1].gameObject);
-                    Cells[x1, y1].material.color = origCol;
+                    Cells[x1, y1].material.color = _origCol;
                 }
             }
         }

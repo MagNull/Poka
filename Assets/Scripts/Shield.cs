@@ -5,19 +5,19 @@ using UnityEngine;
 
 public class Shield : Damager
 {
-    private float bashDist;
+    private float _bashDist;
 
     protected override void Awake()
     {
         base.Awake();
-        bashDist = GetComponentInParent<Shielder>().ShieldAttackDist;
+        _bashDist = GetComponentInParent<Shielder>().ShieldAttackDist;
     }
 
     protected override void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<HealthPoints>() && !other.CompareTag(gameObject.tag) && GetComponentInParent<Shielder>().canAttack)
         {
-            Vector3 newTargetPos = other.transform.position - transform.right * bashDist;
+            Vector3 newTargetPos = other.transform.position - transform.right * _bashDist;
             StartCoroutine(ShieldBash(newTargetPos, other.transform));
             other.GetComponent<HealthPoints>().TakeDamage(damage);
         }
@@ -27,7 +27,7 @@ public class Shield : Damager
     {
         if (other.GetComponent<HealthPoints>() && !other.CompareTag(gameObject.tag) && GetComponentInParent<Shielder>().canAttack)
         {
-            Vector3 newTargetPos = other.transform.position - transform.right * bashDist;
+            Vector3 newTargetPos = other.transform.position - transform.right * _bashDist;
             StartCoroutine(ShieldBash(newTargetPos, other.transform));
             other.GetComponent<HealthPoints>().TakeDamage(damage);
         }
@@ -50,7 +50,7 @@ public class Shield : Damager
                         break;
                     }
 
-                    targRb.velocity = (newPos - firstPos).normalized * bashDist;
+                    targRb.velocity = (newPos - firstPos).normalized * _bashDist;
                     yield return null;
                 }
                 else
