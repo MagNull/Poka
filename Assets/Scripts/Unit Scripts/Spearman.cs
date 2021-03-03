@@ -1,50 +1,51 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UI_Scripts;
 using UnityEngine;
 
-public class Spearman : Unit
+namespace Unit_Scripts
 {
-    [SerializeField] private float backStepSpeed;
-    [SerializeField] private float minDistToBackStep;
-
-    protected override void Work()
+    public class Spearman : Unit
     {
-        FindTarget();
-        if (_target != null)
+        [SerializeField] private float backStepSpeed;
+        [SerializeField] private float minDistToBackStep;
+
+        protected override void Work()
         {
-            Vector3 lookTarget = (new Vector3(_target.transform.position.x, transform.position.y, _target.transform.position.z) - transform.position).normalized;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookTarget), Time.deltaTime);
-            if (Vector3.Distance(gameObject.transform.position, _target.transform.position) <= minDistToAttack)
+            FindTarget();
+            if (Target != null)
             {
-                _targHP = _target.GetComponent<HealthPoints>();
-                if(Vector3.Distance(gameObject.transform.position, _target.transform.position) <= minDistToBackStep)
+                LookAtEnemy();
+                if ((gameObject.transform.position - Target.transform.position).sqrMagnitude <= Mathf.Pow(MINDistToAttack, 2))
                 {
-                    _rb.velocity = -transform.forward * backStepSpeed;
+                    _targetHP = Target.GetComponent<HealthPoints>();
+                    if((gameObject.transform.position - Target.transform.position).sqrMagnitude <= Mathf.Pow(minDistToBackStep, 2))
+                    {
+                        _rb.velocity = -transform.forward * backStepSpeed;
+                    }
+                    else
+                    {
+                        _rb.velocity = Vector3.zero;
+                    }
+                    if (_animator.GetInteger(_attackAnimationName) == 0)
+                    {
+                        _animator.SetInteger(_attackAnimationName, UnityEngine.Random.Range(1, numberOfAttackAnimations + 1));
+                        _animator.speed = 2 / attackDelay;
+                    }
                 }
                 else
                 {
-                    _rb.velocity = Vector3.zero;
-                }
-                if (_animator?.GetInteger("Attack") == 0)
-                {
-                    _animator?.SetInteger("Attack", UnityEngine.Random.Range(1, numberOfAttackAnimations + 1));
-                    _animator.speed = 2 / attackDelay;
+                    _animator.SetInteger(_attackAnimationName, 0);
+                    Vector3 movementDirection = (Target.transform.position - transform.position).normalized;
+                    _rb.velocity = movementDirection * speed;
                 }
             }
             else
             {
-                _animator?.SetInteger("Attack", 0);
-                Vector3 movementDirection = (_target.transform.position - transform.position).normalized;
-                _rb.velocity = movementDirection * speed;
-            }
-        }
-        else
-        {
-            _rb.velocity = Vector3.zero;
-            _animator?.SetInteger("Attack", 0);
-            if (gameObject.tag == "Player")
-            {
-                FindObjectOfType<UIMethods>().Win();
+                _rb.velocity = Vector3.zero;
+                _animator.SetInteger(_attackAnimationName, 0);
+                if (UnitSide == UnitSide.PLAYER)
+                {
+                    _uiMethods.Win();
+                }
             }
         }
     }

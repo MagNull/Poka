@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 5988100542272821418}
   - component: {fileID: 5988100542272821419}
   - component: {fileID: -1564512847311888194}
+  - component: {fileID: 3207798618739684353}
+  - component: {fileID: -6668524031781725506}
   m_Layer: 0
   m_Name: Ally Spearman
   m_TagString: Player
@@ -83,13 +85,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitPrice: 2
   Damage: 1
+  UnitSide: 0
   minDistToAttack: 3
   speed: 2
-  attackDelay: 0
-  minAttackDelay: 2
-  maxAttackDelay: 2.5
+  attackDelay: 1
   numberOfAttackAnimations: 2
-  offsetSpeed: 1
   backStepSpeed: 2
   minDistToBackStep: 2
 --- !u!65 &5988100542272821418
@@ -141,6 +141,32 @@ MonoBehaviour:
   - {fileID: 3524517564594729355}
   - {fileID: 4961722237543608366}
   size: {x: 1, y: 1}
+--- !u!114 &3207798618739684353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5988100542272821409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 0
+--- !u!114 &-6668524031781725506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5988100542272821409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b884c420c719d394bb17b1930ddf27c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bypassSpeed: 1
 --- !u!65 &304502137919974210
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -173,6 +199,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5988100542272821422}
     m_Modifications:
+    - target: {fileID: -4412058415629678293, guid: 65ca0f3dcf4b00141b2b40dde80d94ac, type: 3}
+      propertyPath: _containerSource
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7014825621156915138, guid: 65ca0f3dcf4b00141b2b40dde80d94ac, type: 3}
       propertyPath: m_RootOrder
       value: 2

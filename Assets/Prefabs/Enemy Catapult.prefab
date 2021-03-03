@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2172156038300679420}
   - component: {fileID: 2172156038300679394}
   - component: {fileID: 2172156038300679395}
+  - component: {fileID: 2313709277598528885}
   m_Layer: 0
   m_Name: Enemy Catapult
   m_TagString: Enemy
@@ -83,19 +84,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitPrice: 4
   Damage: 1
+  UnitSide: 1
   minDistToAttack: 5
   speed: 0
   attackDelay: 0
-  minAttackDelay: 12
-  maxAttackDelay: 12
   numberOfAttackAnimations: 1
-  offsetSpeed: 1
   arrowRb: {fileID: 3803078344564625644, guid: 10b29912533ac9a4193a9d5a6b622081, type: 3}
   minAngle: 45
   maxAngle: 60
-  spawnTransform: {fileID: 7090806131783403644}
   meleeAttackDist: 1
   meleeDamage: 1
+  arrowSpawnTransform: {fileID: 7090806131783403644}
   bow: {fileID: 7089355930943877676}
   knife: {fileID: 2172156038300679392}
 --- !u!65 &2172156038300679394
@@ -130,6 +129,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2313709277598528885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2172156038300679392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 0
 --- !u!1 &3402952558969922862
 GameObject:
   m_ObjectHideFlags: 0
@@ -5910,7 +5922,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7090806131783403644
 Transform:
   m_ObjectHideFlags: 0

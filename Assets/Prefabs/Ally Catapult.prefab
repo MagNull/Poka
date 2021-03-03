@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7930399205376361187}
   - component: {fileID: 892979478475713143}
+  - component: {fileID: 1449562587848479999}
   m_Layer: 0
   m_Name: Ally Catapult
   m_TagString: Player
@@ -56,6 +57,19 @@ MonoBehaviour:
   - {fileID: 9003765924123785660}
   - {fileID: 9003955103420003428}
   size: {x: 3, y: 3}
+--- !u!114 &1449562587848479999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7930399205376361188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 0
 --- !u!1001 &2217815399170587458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -63,6 +77,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7930399205376361187}
     m_Modifications:
+    - target: {fileID: -4954380757388559962, guid: 8da6a1a6233fe8b4c83a081eb9003ae1, type: 3}
+      propertyPath: _containerSource
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2172156038300679392, guid: 8da6a1a6233fe8b4c83a081eb9003ae1, type: 3}
       propertyPath: m_Name
       value: Catapult
@@ -88,6 +106,10 @@ PrefabInstance:
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2172156038300679420, guid: 8da6a1a6233fe8b4c83a081eb9003ae1, type: 3}
+      propertyPath: attackDelay
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172156038300679420, guid: 8da6a1a6233fe8b4c83a081eb9003ae1, type: 3}
       propertyPath: meleeDamage
       value: 1
       objectReference: {fileID: 0}
@@ -99,6 +121,10 @@ PrefabInstance:
       propertyPath: meleeAttackDist
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2172156038300679420, guid: 8da6a1a6233fe8b4c83a081eb9003ae1, type: 3}
+      propertyPath: arrowSpawnTransform
+      value: 
+      objectReference: {fileID: 8980417081353220926}
     - target: {fileID: 2172156038300679422, guid: 8da6a1a6233fe8b4c83a081eb9003ae1, type: 3}
       propertyPath: blood
       value: 

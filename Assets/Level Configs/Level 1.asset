@@ -14,24 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemys:
   - 00000
-  - 00000
+  - 
   - 0
   - 0
   - 0
   - 0
   - 0
   - 00000
-  - 00000
-  - 1001
-  - 1001
-  - 1001
-  - 1001
-  - 00000
-  - 00000
+  - 1
+  - 
+  - 
+  - 
+  - 
   - 00000
   - 00000
   - 00000
   - 00000
+  - 00000
+  - 1
   LevelMoneyBalance: 6
   Warrior: 1
   Archer: 0

@@ -1,22 +1,26 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unit_Scripts;
 using UnityEngine;
 
 public class Damager : MonoBehaviour
 {
     protected float damage;
+    private Unit _unit;
 
     protected virtual void Awake()
     {
-        damage = GetComponentInParent<Unit>().Damage;
+        _unit = GetComponentInParent<Unit>();
+        damage = _unit.Damage;
     }
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<HealthPoints>() && !other.CompareTag(gameObject.tag))
+        if (other.TryGetComponent(out HealthPoints healthPoints) 
+            && other.GetComponent<Unit>().UnitSide != _unit.UnitSide)
         {
-            other.GetComponent<HealthPoints>().TakeDamage(damage);
+            healthPoints.TakeDamage(damage);
         }
     }
 }

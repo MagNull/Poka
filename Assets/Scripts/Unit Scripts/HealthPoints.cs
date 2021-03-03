@@ -1,79 +1,60 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthPoints : MonoBehaviour
+namespace Unit_Scripts
 {
-    [SerializeField] private float health = 5;
-    [SerializeField] private ParticleSystem blood;
-
-    public void TakeDamage(float damage,ref bool flag)
+    [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Unit))]
+    public class HealthPoints : MonoBehaviour
     {
-        try
+        [SerializeField] private float health = 5;
+        [SerializeField] private ParticleSystem blood;
+        private Animator _animator;
+        private Rigidbody _rigidbody;
+        private Unit _unit;
+
+        private void Awake()
         {
-            if (gameObject)
+            _animator = GetComponent<Animator>();
+            _rigidbody = GetComponent<Rigidbody>();
+            _unit = GetComponent<Unit>();
+        }
+
+        public void TakeDamage(float damage,ref bool flag)
+        {
+            health -= damage;
+            if (health <= 0)
             {
-                if (GetComponent<Unit>() && GetComponent<Unit>().enabled == true)
-                {
-                    health -= damage;
-                    if (health <= 0)
-                    {
-                        flag = false;
-                        GetComponent<Animator>().SetInteger("Attack", -1);
-                        Destroy(GetComponent<Unit>());
-                        GetComponent<Rigidbody>().isKinematic = true;
-                        Destroy(gameObject, 1);
-                    }
-                    blood.Play();
-                }
+                flag = false;
+                _animator.SetInteger("Attack", -1);
+                _rigidbody.isKinematic = true;
+                _unit.enabled = false;
+                Destroy(gameObject, 1);
             }
-        }
-        catch
-        {
-
+            blood.Play();
         }
         
-        
-        
-    }
-    public void TakeDamage(float damage)
-    {
-        try
+        public void TakeDamage(float damage)
         {
-            if (GetComponent<Unit>() && GetComponent<Unit>().enabled == true)
+            health -= damage;
+            if (health <= 0)
             {
-                health -= damage;
-                if (health <= 0)
-                {
-                    GetComponent<Animator>().SetInteger("Attack", -1);
-                    Destroy(GetComponent<Unit>());
-                    Destroy(GetComponent<Rigidbody>());
-                    Destroy(gameObject, 1);
-                }
-                else
-                {
-                    blood.Play();
-                }
+                _animator.SetInteger("Attack", -1);
+                _rigidbody.isKinematic = true;
+                _unit.enabled = false;
+                Destroy(gameObject, 1);
             }
-        }
-        
-        catch
-        {
+            else
+            {
+                blood.Play();
+            }
 
         }
 
-    }
-
-    private void Die()
-    {
-        try
+        private void Die()
         {
             Destroy(gameObject);
-        }
-        catch
-        {
-
         }
     }
 }

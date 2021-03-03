@@ -1,26 +1,37 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UI_Scripts;
+using Unit_Scripts;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class GameStateController : MonoBehaviour
 {
     [SerializeField] private Button activeButton;
-    [SerializeField] private CameraMover cameraMover;
-    [SerializeField] private UIMethods UI;
+    private CameraMover _cameraMover;
+    private UIMethods _uiMethods;
+    private UnitBank _unitBank;
     
     [Header("Grid Fields")]
-    private GameObject[] _cells;
     private Grid _grid;
     private EnemyGrid _enemyGrid;
     
     private static bool _isGameStart;
 
-    public static bool IsGameStart => _isGameStart;
+    public bool IsGameStart => _isGameStart;
     public Grid Grid => _grid;
 
     public EnemyGrid EnemyGrid => _enemyGrid;
+
+    [Inject]
+    public void Construct(CameraMover cameraMover, UIMethods uiMethods, UnitBank unitBank)
+    {
+        _cameraMover = cameraMover;
+        _uiMethods = uiMethods;
+        _unitBank = unitBank;
+    }
 
     private void Start()
     {
@@ -29,7 +40,6 @@ public class GameStateController : MonoBehaviour
     
     private void InitializeGrids()
     {
-        _cells = GameObject.FindGameObjectsWithTag("Cell");
         _grid = FindObjectOfType<Grid>();
         _enemyGrid = FindObjectOfType<EnemyGrid>();
     }
@@ -37,14 +47,14 @@ public class GameStateController : MonoBehaviour
     public void SetGameState(bool state) 
     {
         _isGameStart = state;
-        cameraMover.SwapCamera(true);
+        _cameraMover.SwapCamera(true);
         Unit[] soldiers = FindObjectsOfType<Unit>();
         foreach (Unit soldier in soldiers)
         {
             soldier.enabled = state;
             soldier.GetComponent<BoxCollider>().isTrigger = !state;
         }
-        foreach (Button button in UI.Buttons)
+        foreach (Button button in _uiMethods.Buttons)
         {
             button.GetComponent<ButtonLighter>()?.ChangeButtonState(!state);
         }
@@ -71,13 +81,13 @@ public class GameStateController : MonoBehaviour
         SetGameState(false);
         _grid.ClearUnits();
         _enemyGrid.ClearUnits();
-        _enemyGrid.SpawnEnemys();
-        UI.RefreshBalance();
-        if(UI.gameUI.activeSelf == false)
+        _enemyGrid.SpawnEnemies();
+        _uiMethods.RefreshBalance();
+        if(_uiMethods.gameUI.activeSelf == false)
         {
-            UI.gameUI.SetActive(true);
+            _uiMethods.gameUI.SetActive(true);
         } 
-        UI.winScreen.SetActive(false);
+        _uiMethods.winScreen.SetActive(false);
         Projectile[] proj = FindObjectsOfType<Projectile>();
         for(var i = 0; i < proj.Length; i++)
         {

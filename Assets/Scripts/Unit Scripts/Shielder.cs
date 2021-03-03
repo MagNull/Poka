@@ -1,61 +1,61 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using UI_Scripts;
 using UnityEngine;
 
-public class Shielder : Unit
+namespace Unit_Scripts
 {
-    public float ShieldAttackDist;
-    public bool canAttack = true;
-    private float _time = 0;
-
-    protected override void Work()
+    public class Shielder : Unit
     {
-        FindTarget();
-        if (_target != null)
+        public float ShieldAttackDist;
+        public bool canAttack = true;
+        private float _time = 0;
+
+        protected override void Work()
         {
-            Vector3 movementDirection = (_target.transform.position - transform.position).normalized;
-            Vector3 lookTarget = (new Vector3(_target.transform.position.x, transform.position.y, _target.transform.position.z) - transform.position).normalized;
-            transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(lookTarget),Time.deltaTime);
-            if (Vector3.Distance(gameObject.transform.position, _target.transform.position) <= minDistToAttack)
+            FindTarget();
+            if (Target != null)
             {
-                _targHP = _target.GetComponent<HealthPoints>();
-                _rb.velocity = Vector3.zero;
-                if (canAttack)
+                Vector3 movementDirection = (Target.transform.position - transform.position).normalized;
+                LookAtEnemy();
+                if ((gameObject.transform.position - Target.transform.position).sqrMagnitude <= Mathf.Pow(MINDistToAttack, 2))
                 {
-                    _animator?.SetInteger("Attack", UnityEngine.Random.Range(1, numberOfAttackAnimations + 1));
+                    _targetHP = Target.GetComponent<HealthPoints>();
+                    _rb.velocity = Vector3.zero;
+                    if (canAttack)
+                    {
+                        _animator?.SetInteger(_attackAnimationName, Random.Range(1, numberOfAttackAnimations + 1));
+                    }
+                    else
+                    {
+                        _animator?.SetInteger(_attackAnimationName,0);
+                    }
                 }
                 else
                 {
-                    _animator?.SetInteger("Attack",0);
+                    _rb.velocity = movementDirection * speed;
                 }
             }
             else
             {
-                _rb.velocity = movementDirection * speed;
+                if (UnitSide == UnitSide.PLAYER)
+                {
+                    _uiMethods.Win();
+                }
+                _animator.SetInteger(_attackAnimationName, 0);
+                _rb.velocity = Vector3.zero;
             }
         }
-        else
-        {
-            if (gameObject.tag == "Player")
-            {
-                FindObjectOfType<UIMethods>().Win();
-            }
-            _animator?.SetInteger("Attack", 0);
-            _rb.velocity = Vector3.zero;
-        }
-    }
 
-    private void FixedUpdate()
-    {
-        if (_time >= attackDelay)
+        private void FixedUpdate()
         {
-            _time = 0;
-            canAttack = true;
-        }
-        else if(!canAttack)
-        {
-            _time += Time.deltaTime;
+            if (_time >= attackDelay)
+            {
+                _time = 0;
+                canAttack = true;
+            }
+            else if(!canAttack)
+            {
+                _time += Time.deltaTime;
+            }
         }
     }
 }

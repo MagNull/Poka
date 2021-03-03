@@ -100,6 +100,8 @@ GameObject:
   - component: {fileID: 5346585390669194969}
   - component: {fileID: 5346585390669194965}
   - component: {fileID: 4832015658212184361}
+  - component: {fileID: -1283042996373168011}
+  - component: {fileID: -5644760158208013241}
   m_Layer: 0
   m_Name: Ally Shielder
   m_TagString: Player
@@ -153,13 +155,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitPrice: 3
   Damage: 1
-  minDistToAttack: 1
+  UnitSide: 0
+  minDistToAttack: 1.5
   speed: 1
   attackDelay: 4
-  minAttackDelay: 1.5
-  maxAttackDelay: 2
   numberOfAttackAnimations: 1
-  offsetSpeed: 1
   ShieldAttackDist: 4
   canAttack: 1
 --- !u!114 &5346585390669194970
@@ -224,6 +224,32 @@ MonoBehaviour:
   - {fileID: 5153132704126116266}
   - {fileID: 2035918088815209890}
   size: {x: 2, y: 2}
+--- !u!114 &-1283042996373168011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5346585390669194968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 0
+--- !u!114 &-5644760158208013241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5346585390669194968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b884c420c719d394bb17b1930ddf27c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bypassSpeed: 1
 --- !u!1 &8291051032371381505
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,6 +396,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5346585390669194966}
     m_Modifications:
+    - target: {fileID: -4412058415629678293, guid: 65ca0f3dcf4b00141b2b40dde80d94ac, type: 3}
+      propertyPath: _containerSource
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7014825621156915138, guid: 65ca0f3dcf4b00141b2b40dde80d94ac, type: 3}
       propertyPath: m_RootOrder
       value: 1

@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unit_Scripts;
 using UnityEngine;
+using Zenject;
+
 public class EnemyGrid : MonoBehaviour
 {
     [SerializeField] private Vector2Int gridSize;
@@ -14,12 +17,19 @@ public class EnemyGrid : MonoBehaviour
     [SerializeField] private Unit spearman;
     [SerializeField] private Unit catapult;
 
+    private UnitBank _unitBank;
+    
+    [Inject]
+    public void Construct(UnitBank unitBank)
+    {
+        _unitBank = unitBank;
+    }
     private void Awake()
     {
         grid = new Unit[gridSize.x, gridSize.y];
     }
 
-    public void SpawnEnemys()
+    public void SpawnEnemies()
     {
         for (int x = 0; x < gridSize.x; x++)
         {
@@ -87,11 +97,6 @@ public class EnemyGrid : MonoBehaviour
                             break;
                         }
                 }
-                    
-
-                    
-
-
             }
         }
     }
@@ -99,7 +104,7 @@ public class EnemyGrid : MonoBehaviour
     public void SetLevelConfig(LevelConfig config)
     {
         levelConfig = config;
-        SpawnEnemys();
+        SpawnEnemies();
     }
 
     public void ClearUnits()

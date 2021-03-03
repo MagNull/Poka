@@ -1,48 +1,49 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class GridUnit : MonoBehaviour
+namespace Unit_Scripts
 {
-    [SerializeField] private Renderer[] renderers;
-    [SerializeField] private Vector2Int size = Vector2Int.one;
-    private List<Color> _normalColors = new List<Color>();
-    private Grid _grid;
-    public Vector2Int Size { get => size; set => size = value; }
-
-    private void Awake()
+    public class GridUnit : MonoBehaviour
     {
-        foreach (var t1 in renderers)
+        [SerializeField] private Renderer[] renderers;
+        [SerializeField] private Vector2Int size = Vector2Int.one;
+        private List<Color> _normalColors = new List<Color>();
+        private Grid _grid;
+        public Vector2Int Size { get => size; set => size = value; }
+
+        private void Awake()
         {
-            Material[] mats = t1.materials;
-            foreach (var t in mats)
+            foreach (var t1 in renderers)
             {
-                _normalColors.Add(t.color);
+                Material[] mats = t1.materials;
+                foreach (var t in mats)
+                {
+                    _normalColors.Add(t.color);
+                }
+            }
+
+            _grid = FindObjectOfType<Grid>();//Performance
+        }
+        public void SetTransparent(bool available)
+        {
+            for (var j = 0; j < renderers.Length; j++)
+            {
+                for (var i = 0; i < renderers[j].materials.Length; i++)
+                {
+                    renderers[j].materials[i].color = available ? Color.green : Color.red;                
+                }
             }
         }
-
-        _grid = FindObjectOfType<Grid>();//Performance
-    }
-    public void SetTransparent(bool available)
-    {
-        for (var j = 0; j < renderers.Length; j++)
+        public void SetColorNormal()
         {
-            for (var i = 0; i < renderers[j].materials.Length; i++)
+            int last = 0;
+            for(var j = 0; j < renderers.Length; j++)
             {
-                renderers[j].materials[i].color = available ? Color.green : Color.red;                
-            }
-        }
-    }
-    public void SetColorNormal()
-    {
-        int last = 0;
-        for(var j = 0; j < renderers.Length; j++)
-        {
-            Material[] mats = renderers[j].materials;
-            for (var i = 0; i < mats.Length; i++)
-            {
-                renderers[j].materials[i].color = _normalColors[last++];
+                Material[] mats = renderers[j].materials;
+                for (var i = 0; i < mats.Length; i++)
+                {
+                    renderers[j].materials[i].color = _normalColors[last++];
+                }
             }
         }
     }

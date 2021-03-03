@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Horseman : Unit
+﻿namespace Unit_Scripts
 {
-    /*[SerializeField] private float force;
+    public class Horseman : Unit
+    {
+        /*[SerializeField] private float force;
 
     protected override void Work()
     {
@@ -40,4 +38,5 @@ public class Horseman : Unit
             print(collision.gameObject.name);
         }
     }*/
+    }
 }

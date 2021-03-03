@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 1267425575173833960}
   - component: {fileID: 1267425575173833956}
   - component: {fileID: 1777491862635344664}
+  - component: {fileID: 5396064879153591498}
+  - component: {fileID: -3221475613148594633}
   m_Layer: 0
   m_Name: Enemy Shielder
   m_TagString: Enemy
@@ -68,13 +70,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitPrice: 0
   Damage: 1
+  UnitSide: 1
   minDistToAttack: 1
   speed: 1
   attackDelay: 4
-  minAttackDelay: 1.5
-  maxAttackDelay: 2
   numberOfAttackAnimations: 1
-  offsetSpeed: 1
   ShieldAttackDist: 4
   canAttack: 1
 --- !u!114 &1267425575173833963
@@ -137,6 +137,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderers: []
   size: {x: 1, y: 1}
+--- !u!114 &5396064879153591498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267425575173833961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b884c420c719d394bb17b1930ddf27c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bypassSpeed: 1
+--- !u!114 &-3221475613148594633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267425575173833961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 0
 --- !u!1 &2930600023449921328
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,6 +394,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1267425575173833959}
     m_Modifications:
+    - target: {fileID: -4412058415629678293, guid: 65ca0f3dcf4b00141b2b40dde80d94ac, type: 3}
+      propertyPath: _containerSource
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7014825621156915138, guid: 65ca0f3dcf4b00141b2b40dde80d94ac, type: 3}
       propertyPath: m_RootOrder
       value: 1

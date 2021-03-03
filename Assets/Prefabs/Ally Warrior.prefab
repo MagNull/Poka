@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 1259391827033794972}
   - component: {fileID: 2498151387665867932}
   - component: {fileID: 6865862234915415061}
+  - component: {fileID: -5038611120012297142}
+  - component: {fileID: -2485080483023970434}
   m_Layer: 0
   m_Name: Ally Warrior
   m_TagString: Player
@@ -83,13 +85,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitPrice: 1
   Damage: 2
-  minDistToAttack: 1.5
-  speed: 1
-  attackDelay: 0
-  minAttackDelay: 2
-  maxAttackDelay: 3
+  UnitSide: 0
+  minDistToAttack: 1.2
+  speed: 1.3
+  attackDelay: 2
   numberOfAttackAnimations: 3
-  offsetSpeed: 1
 --- !u!114 &1259391827033794972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,6 +138,32 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-5038611120012297142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929156001379093678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 0
+--- !u!114 &-2485080483023970434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929156001379093678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b884c420c719d394bb17b1930ddf27c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bypassSpeed: 1
 --- !u!1 &4465808656681047392
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,6 +366,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4403208472806398814}
     m_Modifications:
+    - target: {fileID: -4412058415629678293, guid: 65ca0f3dcf4b00141b2b40dde80d94ac, type: 3}
+      propertyPath: _containerSource
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7014825621156915138, guid: 65ca0f3dcf4b00141b2b40dde80d94ac, type: 3}
       propertyPath: m_RootOrder
       value: 2

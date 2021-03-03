@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UI_Scripts;
+using Unit_Scripts;
 using UnityEngine;
 
 public class Grid : MonoBehaviour
@@ -30,8 +32,8 @@ public class Grid : MonoBehaviour
     private int x;
     private int y;
 
-    private Camera currentCamera;
-
+    private Camera _currentCamera;
+    
     private Color _origCol;
     private bool _available;
     private UIMethods _ui;
@@ -55,13 +57,11 @@ public class Grid : MonoBehaviour
 
     }
 
-    public Camera CurrentCamera { get => currentCamera; set => currentCamera = value; }
-
     public MeshRenderer[,] Cells => _cells;
 
     private void Start()
     {
-        CurrentCamera = Camera.main;
+        _currentCamera = Camera.main;
         _ui = FindObjectOfType<UIMethods>();
         _origCol = cellPrefab.GetComponent<Renderer>().sharedMaterial.color;
         _grid = new GridUnit[gridSize.x, gridSize.y];
@@ -198,7 +198,7 @@ public class Grid : MonoBehaviour
         if (_flyingUnit != null)
         {
             Plane groundPlane = new Plane(Vector3.up, transform.position);
-            Ray ray = CurrentCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = _currentCamera.ScreenPointToRay(Input.mousePosition);
             if (groundPlane.Raycast(ray, out float position))
             {
                 Vector3 worldPosition = ray.GetPoint(position);
@@ -235,7 +235,7 @@ public class Grid : MonoBehaviour
                 }
             }
             _activeCells.Clear();
-            if((size.x * size.y) % 2 != 0)
+            if((size.x * size.y) % 2 != 0) //TODO: SKOBKI
             {
                 for (var x1 = 0; x1 < size.x; x1++)
                 {

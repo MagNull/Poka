@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 7843234115861076024}
   - component: {fileID: 7843234115861076037}
   - component: {fileID: -4430061429155533066}
+  - component: {fileID: 6617054661814448448}
+  - component: {fileID: 7383588591594890919}
   m_Layer: 0
   m_Name: Ally Archer
   m_TagString: Player
@@ -103,19 +105,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitPrice: 2
   Damage: 1
+  UnitSide: 0
   minDistToAttack: 12
   speed: 1
-  attackDelay: 0
-  minAttackDelay: 3
-  maxAttackDelay: 4
+  attackDelay: 5
   numberOfAttackAnimations: 1
-  offsetSpeed: 1
   arrowRb: {fileID: 254475181900532, guid: 52ec9d25d6b9c1b4782dcffd99111d89, type: 3}
   minAngle: 30
   maxAngle: 60
-  spawnTransform: {fileID: 7843234117692997933}
   meleeAttackDist: 2
   meleeDamage: 1
+  arrowSpawnTransform: {fileID: 7843234117692997933}
   bow: {fileID: 7843234117692997932}
   knife: {fileID: 919132147859724512}
 --- !u!65 &7843234115861076037
@@ -150,6 +150,32 @@ MonoBehaviour:
   - {fileID: 1731838912629736220}
   - {fileID: 531606201219982483}
   size: {x: 1, y: 1}
+--- !u!114 &6617054661814448448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7843234115861076027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 0
+--- !u!114 &7383588591594890919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7843234115861076027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b884c420c719d394bb17b1930ddf27c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bypassSpeed: 1
 --- !u!1 &7843234117692997932
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,6 +286,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7843234115861076036}
     m_Modifications:
+    - target: {fileID: -4412058415629678293, guid: 65ca0f3dcf4b00141b2b40dde80d94ac, type: 3}
+      propertyPath: _containerSource
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3327732386653530718, guid: 65ca0f3dcf4b00141b2b40dde80d94ac, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1

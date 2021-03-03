@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4893743778458775381}
   - component: {fileID: 4609630965043106680}
   - component: {fileID: 254475181900532}
+  - component: {fileID: 7553770272468058886}
   m_Layer: 0
   m_Name: Enemy Arrow
   m_TagString: Enemy
@@ -46,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d770dce565f93b418b5455dd990f01b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UnitSide: 0
   damage: 3
   isDestroy: 1
   damageRadius: 0
@@ -79,6 +81,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7553770272468058886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7780079799141688365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 0
 --- !u!1001 &1388612665670580196
 PrefabInstance:
   m_ObjectHideFlags: 0

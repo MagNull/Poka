@@ -1,61 +1,60 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UI_Scripts;
 using UnityEngine;
 
-public class Catapult : Archer
+namespace Unit_Scripts
 {
-    protected override void Work()
+    public class Catapult : Archer
     {
-        FindTarget();
-        if (_target != null)
+        protected override void Work()
         {
-            Vector3 lookTarget = (new Vector3(_target.transform.position.x, transform.position.y, _target.transform.position.z) - transform.position).normalized;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookTarget), Time.deltaTime);
-            if (Vector3.Distance(gameObject.transform.position, _target.transform.position) <= minDistToAttack)
+            FindTarget();
+            if (Target != null)
             {
-                if (Vector3.Distance(gameObject.transform.position, _target.transform.position) <= meleeAttackDist)
+                LookAtEnemy();
+                if ((gameObject.transform.position - Target.transform.position).sqrMagnitude <= Mathf.Pow(MINDistToAttack, 2))
                 {
-                    _animator.SetInteger("Attack", 2);
-                    _targHP = _target.GetComponent<HealthPoints>();
+                    if ((gameObject.transform.position - Target.transform.position).sqrMagnitude <= Mathf.Pow(meleeAttackDist, 2))
+                    {
+                        _animator.SetInteger(_attackAnimationName, 2);
+                    }
+                    else
+                    {
+                        _animator.SetInteger(_attackAnimationName, 1);
+                    }
+                    _targetHP = Target.GetComponent<HealthPoints>();
                     _rb.velocity = Vector3.zero;
-                    _animator.speed = 5 / attackDelay;
+                    _animator.speed = 2 / attackDelay;
                 }
                 else
                 {
-                    _animator.SetInteger("Attack", 1);
-                    _targHP = _target.GetComponent<HealthPoints>();
-                    _rb.velocity = Vector3.zero;
-                    _animator.speed = 2 / attackDelay;
+                    _animator.SetInteger(_attackAnimationName, 0);
+                    Vector3 movementDirection = (Target.transform.position - transform.position).normalized;
+                    _rb.velocity = movementDirection * speed;
                 }
             }
             else
             {
-                _animator?.SetInteger("Attack", 0);
-                Vector3 movementDirection = (_target.transform.position - transform.position).normalized;
-                _rb.velocity = movementDirection * speed;
+                if (UnitSide == UnitSide.PLAYER)
+                {
+                    _uiMethods.Win();
+                }
+                _rb.velocity = Vector3.zero;
+                _animator.SetInteger(_attackAnimationName, 0);
             }
         }
-        else
+        protected override void Attack()
         {
-            if (gameObject.tag == "Player")
+            if (_animator.GetInteger(_attackAnimationName) == 1)
             {
-                FindObjectOfType<UIMethods>().Win();
+                Rigidbody arrowRb = Instantiate(base.arrowRb, arrowSpawnTransform.position, Quaternion.identity);
+                arrowRb.GetComponent<Projectile>().UnitSide = UnitSide;
+                float speed = CalculateTrajectory(_targetHP);
+                arrowRb.velocity = arrowSpawnTransform.forward * speed;
             }
-            _rb.velocity = Vector3.zero;
-            _animator?.SetInteger("Attack", 0);
-        }
-    }
-    public override void Attack()
-    {
-        if (_animator.GetInteger("Attack") == 1)
-        {
-            Rigidbody arrowRb = Instantiate(base.arrowRb, spawnTransform.position, Quaternion.identity);
-            float speed = CalculateTrajectory(_targHP);
-            arrowRb.velocity = spawnTransform.forward * speed;
-        }
-        else if(_animator.GetInteger("Attack") == 2)
-        {
-            _targHP?.TakeDamage(meleeDamage);
+            else if(_animator.GetInteger(_attackAnimationName) == 2)
+            {
+                _targetHP.TakeDamage(meleeDamage);
+            }
         }
     }
 }
